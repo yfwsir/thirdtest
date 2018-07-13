@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+		*{
+            margin: 0;
+            padding: 0;
+        }
+		body{
+			position: relative;
+		}
+        .wrap{
+            width: 200px;
+			height: 150px;
+            border: solid 1px black;
+            position: absolute;
+			text-align: center;
+			display: none;
+			background: yellow;
+        }
+        .top{
+            line-height: 50px;
+            text-align: center;
+        }
+        .bottom{
+            height: 100px;
+        }
+        [type="button"]{
+            cursor: pointer;
+		}
+		.box{
+			width: 100vw;
+			height: 100vh;
+			position: absolute;
+			top: 0;
+			left: 0;
+			background: black;
+			opacity: 0.4;
+			display: none;
+		}
+		</style>
+	</head>
+	<body>
+		<table border="1" cellspacing="0">
+				<tr>
+					<th>id</th>
+					<th>商品名称</th>
+					<th>价格</th>
+					<th>操作</th>
+				</tr>
+				<tr></tr>
+		</table>	
+
+		<div class="box">
+				<div class="wrap">
+						<div class="top">是否确认要删除</div>
+						<div class="bottom">
+							<input type="button" value="确认" class="confirm">
+							<input type="button" value="取消" class="cancel">
+						</div>
+					</div>
+		</div>
+		
+	</body>
+</html>
+<script src="jquery.js"></script>
+<script type="text/javascript">
+			// function ajax(){
+				var xhr = new XMLHttpRequest()
+				xhr.open('post','1.php',true)
+				xhr.send(null)
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						var json = xhr.responseText
+						json = JSON.parse(json)
+						// console.log(json)
+						var table = document.getElementsByTagName('table')[0]
+						for(var i = 0; i < json.length; i++){
+							var tr = document.createElement('tr')
+							for (var j in json[i]) {
+								var td = document.createElement('td')
+								td.innerHTML = json[i][j]
+								tr.appendChild(td)
+							}
+							var td = document.createElement('td')
+							td.innerHTML = "<button class='btn'>删除</button>"
+							// console.log(td)
+							td.setAttribute('class','btn')
+							tr.appendChild(td)
+							
+							// console.log(tr)
+							table.appendChild(tr)
+						}
+
+						// var btn = document.querySelector('.btn');
+						// 	btn.onclick = function(){
+						// 	console.log(1)
+						// }
+						$('table').on('click','.btn',function(){
+							// console.log(1);
+							var $tr = this.closest('tr') ;
+							// console.log($tr)
+							$('.box').css('display','block')
+							$('.wrap').css('display','block')
+							$('.wrap').css('top',window.innerHeight / 2 - $('.wrap').height() / 2)
+							$('.wrap').css('left',window.innerWidth / 2 - $('.wrap').width() / 2)
+							$('.confirm').click(function(){
+								$('.box').css('display','none')
+								$('.wrap').css('display','none')
+								$tr.remove();
+							})
+							$('.cancel').click(function(){
+								$('.box').css('display','none')
+								$('.wrap').css('display','none')
+							})
+						})
+						
+					var $wrap = document.querySelector('.wrap');
+					$wrap.onmousedown = function(event){
+						event = event || window.event ;
+						var left = event.clientX - $wrap.offsetLeft ;
+						var top = event.clientY - $wrap.offsetTop ;
+						// var left = event.offsetX 
+						// var top = event.offsetY
+						console.log(left,event.offsetX)
+						document.onmousemove = function(event){
+							event = event || window.event ;
+							console.log(event.clientX) ;
+							$wrap.style.left = event.clientX - left + 'px' ;
+							$wrap.style.top = event.clientY - top + 'px' ;
+						}
+					}
+
+					document.onmouseup = function(){
+						document.onmousemove = null ;
+					}
+				}
+			}
+
+		</script>

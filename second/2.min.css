@@ -1,0 +1,1 @@
+*{margin:0;padding:0}.ul{width:1000px;margin:50px auto}.ul li{position:relative;list-style:none;width:200px;height:300px;border:solid 1px #cccccc;float:left;display:flex;justify-content:center;align-items:center;overflow:hidden;margin-right:20px}.ul li img{position:relative}.ul li p{width:200px;height:50px;background:red;position:absolute;bottom:-50px}
